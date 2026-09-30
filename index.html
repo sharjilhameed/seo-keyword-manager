@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SEO Keyword Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f4f8;--panel:#fff;--line:#e4e7ee;--text:#1b2233;--t2:#667089;--ink:#1b2233;--onink:#fff;--acc:#2d5bff;--hov:#f6f7fb;color-scheme:light}
+:root[data-theme=dark]{--bg:#0e1320;--panel:#161c2c;--line:#283149;--text:#e8ecf5;--t2:#93a0ba;--ink:#e8ecf5;--onink:#0e1320;--hov:#1b2336;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:13.5px/1.45 Manrope,-apple-system,"Segoe UI",Arial,sans-serif;font-variant-numeric:tabular-nums}
+button,input,select,textarea{font:inherit;color:inherit}
+header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 22px;padding-top:calc(14px + env(safe-area-inset-top,0px))}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;letter-spacing:-.01em}
+.mark{width:30px;height:30px;border-radius:9px;background:var(--ink);display:grid;place-content:center;gap:3px}
+.mark i{display:block;height:3px;border-radius:2px;background:var(--onink)}
+.sp{flex:1}
+.btn{border:1px solid var(--line);background:var(--panel);border-radius:9px;padding:7px 13px;font-weight:600;font-size:12.5px;cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--hov)}.btn:disabled{opacity:.4;cursor:default}
+.btn.pri{background:var(--ink);color:var(--onink);border-color:var(--ink)}
+.btn.pri:hover{opacity:.88}
+select.top{border:1px solid var(--line);background:var(--panel);border-radius:9px;padding:7px 10px;font-weight:600}
+:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+main{max-width:1640px;margin:0 auto;padding:4px 22px 40px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:10px}
+.card,.mix,.toolbar,.tw{background:var(--panel);border:1px solid var(--line);border-radius:14px}
+.card{padding:12px 14px}.card .l{color:var(--t2);font-size:12px}
+.card .v{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-top:2px;border-radius:5px}
+.mix{padding:12px 14px;margin-bottom:10px}
+.mix .t{display:flex;justify-content:space-between;color:var(--t2);font-size:12px;margin-bottom:8px}
+.bar{display:flex;height:12px;border-radius:99px;overflow:hidden;gap:2px;background:var(--hov)}
+.bar span{min-width:3px;cursor:pointer}
+.leg{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:9px}
+.leg button{border:0;background:none;cursor:pointer;display:flex;gap:6px;align-items:center;font-size:12px;font-weight:600;padding:0}
+.leg i,.pi i{width:9px;height:9px;border-radius:3px;display:inline-block}
+.leg b{color:var(--t2);font-weight:600}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:9px;margin-bottom:8px}
+.search{flex:1;min-width:200px;background:var(--bg);border-radius:9px;padding:0 12px}
+.search input{width:100%;border:0;background:none;outline:0;padding:8px 0}
+.st{margin-left:auto;color:var(--t2);font-size:12px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.chip{background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:3px 6px 3px 11px;font-size:12px;display:flex;gap:6px;align-items:center}
+.chip button{border:0;background:none;cursor:pointer;color:var(--t2)}
+.tw{overflow:auto;max-height:66vh}
+table{border-collapse:separate;border-spacing:0;width:100%}
+th{position:sticky;top:0;z-index:3;background:var(--panel);text-align:left;padding:10px 10px;font-weight:700;font-size:12px;color:var(--t2);border-bottom:1px solid var(--line);white-space:nowrap}
+th[data-k]{cursor:pointer}th[data-k]:hover{color:var(--text)}
+td{padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:middle;background:var(--panel)}
+tr:hover td{background:var(--hov)}tr.sel td{background:color-mix(in srgb,var(--acc) 9%,var(--panel))}
+.s0{position:sticky;left:0;z-index:2;width:36px}th.s0{z-index:4}
+.s1{position:sticky;left:36px;z-index:2;min-width:220px;font-weight:700}th.s1{z-index:4}
+.sr{position:sticky;right:0;z-index:2;text-align:right}th.sr{z-index:4}
+td[contenteditable]:focus{outline:2px solid var(--acc);outline-offset:-2px;border-radius:4px}
+.nt{white-space:normal;min-width:180px;max-width:260px}
+.pill{display:inline-flex;align-items:center;gap:4px;border-radius:99px;padding:2px 9px;font-size:11.5px;font-weight:700;color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);margin:1px 3px 1px 0}
+.pill button{border:0;background:none;color:inherit;cursor:pointer;padding:0 0 0 2px;opacity:.6;font-size:13px;line-height:1}.pill button:hover{opacity:1}
+.add{border:1px dashed var(--line);background:none;color:var(--t2);border-radius:99px;padding:1px 9px;font-size:11.5px;cursor:pointer;font-weight:600}
+.add:hover{color:var(--acc);border-color:var(--acc)}
+.cs{border:0;border-radius:99px;padding:3px 4px;font-size:11.5px;font-weight:700;color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);cursor:pointer;max-width:170px}
+.cs option{color:var(--text);background:var(--panel)}
+.num{border:1px solid transparent;background:var(--bg);border-radius:6px;padding:3px 6px;width:66px;font-weight:600}
+.num:hover{border-color:var(--line)}
+.df{display:flex;align-items:center;gap:8px}
+.meter{width:44px;height:5px;border-radius:9px;background:var(--line);overflow:hidden;display:block}.meter i{display:block;height:100%}
+.rb{border:0;background:none;cursor:pointer;color:var(--t2);padding:3px 5px;border-radius:6px}.rb:hover{background:var(--hov);color:var(--acc)}
+.empty{padding:56px 20px;text-align:center;color:var(--t2)}.empty h3{color:var(--text);margin:0 0 4px}
+.pop{position:fixed;z-index:50;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px;width:240px;box-shadow:0 12px 32px rgba(10,20,40,.18);max-height:70vh;overflow:auto}
+.pi{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:7px;cursor:pointer;font-weight:600}.pi:hover{background:var(--hov)}
+.pa{display:flex;gap:6px;margin:6px 0 4px}.pa input{flex:1;min-width:0;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:6px 9px}
+.lnk{display:block;padding:6px 8px;color:var(--acc);cursor:pointer;font-weight:600;font-size:12px}
+#ov{position:fixed;inset:0;background:rgba(10,16,30,.5);z-index:60;display:grid;place-items:center;padding:16px}#ov[hidden]{display:none}
+.modal{background:var(--panel);border-radius:16px;width:min(560px,100%);max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.mh{display:flex;justify-content:space-between;align-items:center;padding:16px 18px 6px;font-size:16px;font-weight:800}
+.mh button{border:0;background:none;cursor:pointer;font-size:16px;color:var(--t2)}
+.tabs{display:flex;gap:4px;padding:6px 14px;overflow:auto;border-bottom:1px solid var(--line)}
+.tabs button{border:0;background:none;padding:6px 11px;border-radius:8px;font-weight:600;color:var(--t2);cursor:pointer;white-space:nowrap}
+.tabs button.on{background:var(--ink);color:var(--onink)}
+.mbody{padding:10px 18px;overflow:auto;flex:1}
+.mr{display:flex;align-items:center;gap:8px;padding:5px 0}
+.mr input:not([type=color]),.madd input,.modal textarea,.modal select{flex:1;min-width:0;border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:7px 10px}
+.mr input[type=color]{width:30px;height:30px;padding:0;border:0;border-radius:8px;background:none;cursor:pointer}
+.cnt{color:var(--t2);font-size:12px;min-width:70px;text-align:right}
+.madd{display:flex;gap:8px;padding:12px 18px 16px;border-top:1px solid var(--line)}
+.modal label.f{display:block;font-weight:600;font-size:12px;margin:10px 0 4px;color:var(--t2)}
+.hint{color:var(--t2);font-size:12px;margin:2px 0 8px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--onink);padding:9px 14px;border-radius:10px;font-weight:600;opacity:0;pointer-events:none;transition:.2s;z-index:70}
+#toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+#toast button{background:none;border:0;color:inherit;text-decoration:underline;cursor:pointer;margin-left:8px;font-weight:700}
+@media(prefers-reduced-motion:reduce){#toast{transition:none}}
+@media(max-width:760px){header,main{padding-left:12px;padding-right:12px}.tw{max-height:none}.st{width:100%;margin:0}}
+@media print{header,.toolbar,.chips,.mix,.s0,.sr,#toast{display:none!important}body{background:#fff;font-size:10px}.tw{max-height:none;overflow:visible;border:0}th,.s1{position:static}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><span class="mark"><i style="width:16px"></i><i style="width:11px"></i><i style="width:14px"></i></span>Keyword Manager</div>
+  <select class="top" id="proj" aria-label="Project"></select>
+  <div class="sp"></div>
+  <button class="btn" id="custBtn">Customize lists</button>
+  <button class="btn" id="themeBtn">Dark mode</button>
+  <button class="btn pri" id="addBtn">+ Add keyword</button>
+</header>
+<main>
+  <div class="cards" id="cards"></div>
+  <div class="mix" id="mix"></div>
+  <div class="toolbar">
+    <label class="search"><input id="q" placeholder="Search keywords, clusters, notes, URLs"></label>
+    <select class="btn" id="fIntent" aria-label="Intent filter"></select>
+    <select class="btn" id="fPri" aria-label="Priority filter"></select>
+    <button class="btn" id="colBtn">Columns</button>
+    <button class="btn" id="bulkBtn">Add many</button>
+    <button class="btn" id="csvBtn">Export CSV</button>
+    <button class="btn" id="pdfBtn">Print / PDF</button>
+    <button class="btn" id="delBtn" disabled>Delete selected</button>
+    <span class="st" id="st"></span>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="tw"><table><thead id="gh"></thead><tbody id="gb"></tbody></table></div>
+  <p style="text-align:center;color:var(--t2);font-size:11px">Made by Sharjil</p>
+</main>
+<div id="ov" hidden></div><div id="toast"></div>
+<script>
+const LS_KEY='seokw_projects_v1',$=s=>document.querySelector(s);
+const PAL=['#3b6ef6','#7c4dd4','#e08e17','#1b9e5f','#d1362f','#0e9fb5','#c2418f','#6b7a90','#7cb518','#d9601f'];
+const mk=(a,c)=>a.map((n,i)=>({n,c:Array.isArray(c)?c[i]:c}));
+const LISTS={intent:{l:'Search intent',f:'intent'},type:{l:'Keyword type',f:'type'},content:{l:'Content type',f:'contentType'},comp:{l:'Competition',f:'competition'},pri:{l:'Priority',f:'priority'}};
+const defOpts=()=>({
+ intent:mk(["Informational","Navigational","Commercial","Transactional"],['#3b6ef6','#7c4dd4','#e08e17','#1b9e5f']),
+ type:mk(["Primary Keyword","Secondary Keyword","Long-Tail Keyword","Short-Tail Keyword","Branded Keyword","Non-Branded Keyword","Local Keyword","Question Keyword","Supporting Keyword","LSI / Semantic Keyword"],'#5b6b8a'),
+ content:mk(["Blog Post","Landing Page","Service Page","Product Page","Category Page","Comparison Page","FAQ Page","Guide","Tutorial","Case Study","Location Page","Homepage","Other"],'#5b6b8a'),
+ comp:mk(["Low","Medium","High","Unknown"],['#1b9e5f','#c9a400','#d1362f','#6b7a90']),
+ pri:mk(["Low","Medium","High","Critical"],['#1b9e5f','#c9a400','#e08e17','#d1362f'])});
+const uid=()=>Math.random().toString(36).slice(2,10);
+const today=()=>new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+const esc=s=>(s??'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const blank=(k,x={})=>({id:uid(),keyword:k,type:'',intent:[],difficulty:0,volume:0,cpc:0,competition:'',contentType:'',cluster:'',targetUrl:'',ranking:'',priority:'',notes:'',updated:today(),...x});
+function demo(){return [
+ ["medical billing services","Primary Keyword",["Commercial"],42,5400,4.2,"Medium","Service Page","Medical Billing","/medical-billing-services/",7,"High","Competitor uses long-form comparison content."],
+ ["what is medical billing","Question Keyword",["Informational"],18,3600,1.1,"Low","Blog Post","Medical Billing","/blog/what-is-medical-billing/",4,"Medium","Good candidate for FAQ page."],
+ ["medical billing software","Secondary Keyword",["Commercial","Transactional"],72,4100,7.2,"High","Product Page","Medical Billing","",0,"Critical","Very competitive niche."],
+ ["medical coding services","Primary Keyword",["Commercial"],55,2400,3.8,"High","Service Page","Medical Coding","/medical-coding/",22,"High",""],
+ ["CPT vs ICD-10 coding","Question Keyword",["Informational"],21,980,1.2,"Low","Guide","Medical Coding","",0,"Low","Good for internal linking."],
+ ["revenue cycle management services","Secondary Keyword",["Commercial"],52,1300,5.8,"High","Service Page","Revenue Cycle Management","/rcm-services/",18,"High",""]
+ ].map(r=>blank(r[0],{type:r[1],intent:r[2],difficulty:r[3],volume:r[4],cpc:r[5],competition:r[6],contentType:r[7],cluster:r[8],targetUrl:r[9],ranking:r[10],priority:r[11],notes:r[12]}));}
+function load(){let s;try{s=JSON.parse(localStorage.getItem(LS_KEY))}catch(e){}
+ s=s||{projects:[{id:uid(),name:"Medical Billing SEO",keywords:demo()},{id:uid(),name:"Blog Keyword Research",keywords:[]}],activeProject:0,theme:'light'};
+ s.options=s.options||{};const d=defOpts();for(const k in d)s.options[k]=s.options[k]||d[k];s.hidden=s.hidden||[];return s;}
+let state=load(),selected=new Set(),sortKey=null,sortDir=1,F={q:'',intent:'',pri:''},tt,mTab='intent';
+const P=()=>state.projects[state.activeProject],O=l=>state.options[l],allRows=()=>state.projects.flatMap(p=>p.keywords);
+const col=(l,n)=>(O(l).find(o=>o.n===n)||{c:'#8a94a6'}).c;
+const pill=(l,n,x='')=>`<span class="pill" style="--c:${col(l,n)}">${esc(n)}${x}</span>`;
+const usage=(l,n)=>allRows().filter(r=>l==='intent'?(r.intent||[]).includes(n):r[LISTS[l].f]===n).length;
+function save(){try{localStorage.setItem(LS_KEY,JSON.stringify(state));$('#st').dataset.saved='Saved '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}catch(e){$('#st').dataset.saved='Not saved (storage unavailable)'}}
+function toast(m,undo){const t=$('#toast');t.innerHTML=esc(m)+(undo?'<button>Undo</button>':'');t.classList.add('on');if(undo)t.querySelector('button').onclick=()=>{undo();t.classList.remove('on')};clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),4500)}
+
+const diff=v=>{v=+v||0;return v<30?['Easy','#1b9e5f']:v<50?['Moderate','#7cb518']:v<70?['Hard','#e08e17']:v<85?['Very hard','#d9601f']:['Extreme','#d1362f']};
+const rankColor=r=>{if(!r||r==='Not Ranking'||!+r)return '#9aa5b8';r=+r;return r<=3?'#1b9e5f':r<=10?'#5fb87f':r<=20?'#c9b400':r<=50?'#e08e17':'#d1362f'};
+function sel(r,l){const f=LISTS[l].f,v=r[f]||'',ex=v&&!O(l).some(o=>o.n===v);
+ return `<select class="cs" data-id="${r.id}" data-k="${f}" data-l="${l}" style="--c:${v?col(l,v):'var(--t2)'}"><option value="">—</option>${O(l).map(o=>`<option ${o.n===v?'selected':''}>${esc(o.n)}</option>`).join('')}${ex?`<option selected>${esc(v)}</option>`:''}<option value="__edit">✎ Edit options…</option></select>`}
+const numIn=(r,k,w,ex='')=>`<input class="num" type="number" min="0" ${ex} value="${r[k]??''}" data-id="${r.id}" data-k="${k}" style="width:${w}px">`;
+const COLS=[
+ {k:'type',l:'Type',s:1,c:r=>sel(r,'type')},
+ {k:'intent',l:'Search intent',c:r=>(r.intent||[]).map(i=>pill('intent',i,`<button data-act="ix" data-id="${r.id}" data-v="${esc(i)}" title="Remove ${esc(i)}">×</button>`)).join('')+`<button class="add" data-act="ip" data-id="${r.id}">${(r.intent||[]).length?'+':'+ Add intent'}</button>`},
+ {k:'difficulty',l:'Difficulty',s:1,c:r=>{const [n,c]=diff(r.difficulty);return `<div class="df">${numIn(r,'difficulty',56,'max="100" step="0.1"')}<span><span class="meter"><i style="width:${Math.min(100,+r.difficulty||0)}%;background:${c}"></i></span><small style="color:${c};font-weight:700">${n}</small></span></div>`}},
+ {k:'volume',l:'Volume',s:1,c:r=>numIn(r,'volume',74)},
+ {k:'cpc',l:'CPC ($)',s:1,c:r=>numIn(r,'cpc',64,'step="0.01"')},
+ {k:'competition',l:'Competition',s:1,c:r=>sel(r,'comp')},
+ {k:'contentType',l:'Content type',s:1,c:r=>sel(r,'content')},
+ {k:'cluster',l:'Cluster',s:1,e:1},
+ {k:'targetUrl',l:'Target URL',e:1},
+ {k:'ranking',l:'Ranking',s:1,c:r=>`<input class="num" type="text" placeholder="—" value="${esc(r.ranking)}" data-id="${r.id}" data-k="ranking" style="width:64px;color:${rankColor(r.ranking)}">`},
+ {k:'priority',l:'Priority',s:1,c:r=>sel(r,'pri')},
+ {k:'notes',l:'Notes',e:1,w:'nt'},
+ {k:'updated',l:'Updated',s:1,c:r=>`<span style="color:var(--t2)">${esc(r.updated)}</span>`}];
+const vis=()=>COLS.filter(c=>!state.hidden.includes(c.k));
+
+function rows(){let a=P().keywords.slice();
+ if(F.q){const t=F.q.toLowerCase();a=a.filter(r=>[r.keyword,r.cluster,r.notes,r.targetUrl].join(' ').toLowerCase().includes(t))}
+ if(F.intent)a=a.filter(r=>(r.intent||[]).includes(F.intent));
+ if(F.pri)a=a.filter(r=>r.priority===F.pri);
+ if(sortKey){const LF={type:'type',contentType:'content',competition:'comp',priority:'pri'};
+  const g=(r)=>{let v=r[sortKey];if(sortKey==='intent')return(v||[]).join(',').toLowerCase();if(LF[sortKey])return O(LF[sortKey]).findIndex(o=>o.n===v);if(typeof v==='string')v=v.toLowerCase();return(v===undefined||v===null||v==='')?-Infinity:v};
+  a.sort((x,y)=>{const p=g(x),q=g(y);return(p<q?-1:p>q?1:0)*sortDir})}
+ return a}
+
+function head(){const arr=k=>sortKey===k?(sortDir>0?' ↑':' ↓'):'';
+ $('#gh').innerHTML=`<tr><th class="s0"><input type="checkbox" id="selAll" aria-label="Select all"></th><th class="s1" data-k="keyword">Keyword${arr('keyword')}</th>${vis().map(c=>`<th ${c.s?`data-k="${c.k}"`:''}>${c.l}${arr(c.k)}</th>`).join('')}<th class="sr"></th></tr>`}
+function cards(){const a=P().keywords,n=a.length,sum=k=>a.reduce((s,r)=>s+(+r[k]||0),0),top=O('pri').slice(-2).map(o=>o.n),ov=P().cardOverrides=P().cardOverrides||{};
+ const c=[['total','Total keywords',n],['volume','Search volume',sum('volume')>=1000?(sum('volume')/1000).toFixed(1)+'K':sum('volume')],['avgdiff','Avg difficulty',n?Math.round(sum('difficulty')/n)+'%':'—'],['avgcpc','Avg CPC','$'+(n?sum('cpc')/n:0).toFixed(2)],['highpri',top.join(' + ')||'High priority',a.filter(r=>top.includes(r.priority)).length],['easy','Easy keywords',a.filter(r=>(+r.difficulty||0)<30).length],['top10','Ranking top 10',a.filter(r=>+r.ranking>0&&+r.ranking<=10).length]];
+ $('#cards').innerHTML=c.map(x=>`<div class="card"><div class="l">${esc(x[1])}</div><div class="v" contenteditable="true" title="Click to edit. Clear it to restore the calculated value." data-c="${x[0]}" data-calc="${esc(x[2])}">${esc(ov[x[0]]!==undefined?ov[x[0]]:x[2])}</div></div>`).join('');
+ const cn=O('intent').map(o=>[o,a.filter(r=>(r.intent||[]).includes(o.n)).length]),tot=cn.reduce((s,x)=>s+x[1],0);
+ $('#mix').innerHTML=`<div class="t"><span>Search intent mix</span><span>Click a segment to filter</span></div>${tot?`<div class="bar">${cn.filter(x=>x[1]).map(x=>`<span data-mix="${esc(x[0].n)}" style="flex:${x[1]};background:${x[0].c}" title="${esc(x[0].n)}: ${x[1]}"></span>`).join('')}</div>`:'<div class="bar"></div>'}<div class="leg">${cn.map(x=>`<button data-mix="${esc(x[0].n)}"><i style="background:${x[0].c}"></i>${esc(x[0].n)} <b>${x[1]}</b></button>`).join('')||'<span class="hint">No intents yet. Use Customize lists to add some.</span>'}</div>`}
+function fills(){const f=(id,l,all)=>{const e=$(id);e.innerHTML=`<option value="">${all}</option>`+O(l).map(o=>`<option>${esc(o.n)}</option>`).join('');e.value=F[id==='#fIntent'?'intent':'pri']};f('#fIntent','intent','All intents');f('#fPri','pri','All priorities')}
+function chips(){const c=[];if(F.q)c.push(['Search: '+F.q,'q']);if(F.intent)c.push(['Intent: '+F.intent,'intent']);if(F.pri)c.push(['Priority: '+F.pri,'pri']);
+ $('#chips').innerHTML=c.map(x=>`<span class="chip">${esc(x[0])}<button data-clr="${x[1]}" aria-label="Remove filter">×</button></span>`).join('')+(c.length>1?'<span class="chip" style="cursor:pointer;padding-right:11px" data-clr="all">Clear all</span>':'')}
+function body(){const a=rows(),v=vis();
+ if(!a.length){$('#gb').innerHTML=`<tr><td colspan="${v.length+3}"><div class="empty"><h3>${P().keywords.length?'No keywords match your filters':'No keywords yet'}</h3>${P().keywords.length?'Try a different search or clear the filters.':'Use “Add keyword” or “Add many” to start.'}</div></td></tr>`;return}
+ $('#gb').innerHTML=a.map(r=>`<tr class="${selected.has(r.id)?'sel':''}"><td class="s0"><input type="checkbox" class="rowchk" data-id="${r.id}" ${selected.has(r.id)?'checked':''}></td><td class="s1" contenteditable="true" data-id="${r.id}" data-k="keyword">${esc(r.keyword)}</td>${v.map(c=>c.e?`<td class="${c.w||''}" contenteditable="true" data-id="${r.id}" data-k="${c.k}">${esc(r[c.k])}</td>`:`<td>${c.c(r)}</td>`).join('')}<td class="sr"><button class="rb" title="Duplicate" data-act="dup" data-id="${r.id}">⧉</button><button class="rb" title="Delete" data-act="del" data-id="${r.id}">🗑</button></td></tr>`).join('')}
+function render(){head();cards();fills();chips();body();const a=rows(),n=P().keywords.length;
+ $('#st').textContent=(a.length!==n?`Showing ${a.length} of ${n} · `:`${n} keywords · `)+($('#st').dataset.saved||'');
+ $('#delBtn').disabled=!selected.size;$('#delBtn').textContent=selected.size?`Delete ${selected.size} selected`:'Delete selected';
+ const s=$('#selAll');if(s)s.checked=a.length>0&&a.every(r=>selected.has(r.id))}
+function projects(){$('#proj').innerHTML=state.projects.map((p,i)=>`<option value="${i}" ${i===state.activeProject?'selected':''}>${esc(p.name)}</option>`).join('')+'<option value="__new">+ New project</option>'}
+
+function commit(id,k,v){const r=P().keywords.find(x=>x.id===id);if(!r)return;
+ if(k==='difficulty')v=Math.max(0,Math.min(100,+v||0));if(k==='volume'||k==='cpc')v=Math.max(0,+v||0);
+ if(r[k]===v)return;r[k]=v;touch(r)}
+function touch(r){r.updated=today();delete r.demo;save();render()}
+
+/* popovers */
+function closePop(){$('#pop')?.remove()}
+function pop(rect,html,bind){closePop();const p=document.createElement('div');p.className='pop';p.id='pop';p.innerHTML=html;document.body.append(p);
+ p.style.left=Math.max(8,Math.min(rect.left,innerWidth-p.offsetWidth-8))+'px';p.style.top=Math.max(8,Math.min(rect.bottom+6,innerHeight-p.offsetHeight-8))+'px';
+ p.querySelectorAll('[data-m]').forEach(a=>a.onclick=()=>{closePop();openManage(a.dataset.m)});bind(p)}
+function intentPop(rect,id){const r=P().keywords.find(x=>x.id===id);if(!r)return;
+ pop(rect,O('intent').map((o,i)=>`<label class="pi"><input type="checkbox" data-i="${i}" ${(r.intent||[]).includes(o.n)?'checked':''}><i style="background:${o.c}"></i>${esc(o.n)}</label>`).join('')+`<div class="pa"><input placeholder="New intent…"><button class="btn">Add</button></div><a class="lnk" data-m="intent">Rename or delete intents…</a>`,p=>{
+  p.onchange=e=>{const n=O('intent')[e.target.dataset.i]?.n;if(!n)return;r.intent=e.target.checked?[...new Set([...(r.intent||[]),n])]:(r.intent||[]).filter(x=>x!==n);touch(r)};
+  const inp=p.querySelector('.pa input'),add=()=>{const n=addOpt('intent',inp.value);if(!n)return;r.intent=[...new Set([...(r.intent||[]),n])];touch(r);intentPop(rect,id)};
+  p.querySelector('.pa button').onclick=add;inp.onkeydown=e=>{if(e.key==='Enter')add()};inp.focus()})}
+function colPop(rect){pop(rect,COLS.map(c=>`<label class="pi"><input type="checkbox" data-k="${c.k}" ${state.hidden.includes(c.k)?'':'checked'}>${c.l}</label>`).join(''),p=>{p.onchange=e=>{const k=e.target.dataset.k;state.hidden=e.target.checked?state.hidden.filter(x=>x!==k):[...state.hidden,k];save();render()}})}
+
+/* option lists */
+function addOpt(l,name){name=(name||'').trim();if(!name)return '';const ex=O(l).find(o=>o.n.toLowerCase()===name.toLowerCase());if(ex)return ex.n;
+ O(l).push({n:name,c:(l==='type'||l==='content')?'#5b6b8a':PAL[O(l).length%PAL.length]});save();return name}
+function rename(l,i,nv){nv=nv.trim();const o=O(l)[i];if(!nv||nv===o.n||O(l).some((x,j)=>j!==i&&x.n.toLowerCase()===nv.toLowerCase()))return;
+ allRows().forEach(r=>{if(l==='intent')r.intent=(r.intent||[]).map(x=>x===o.n?nv:x);else if(r[LISTS[l].f]===o.n)r[LISTS[l].f]=nv});
+ if(F.intent===o.n&&l==='intent')F.intent=nv;if(F.pri===o.n&&l==='pri')F.pri=nv;o.n=nv}
+function delOpt(l,i){const o=O(l)[i],u=usage(l,o.n);
+ if(u&&!confirm(`"${o.n}" is used by ${u} keyword${u>1?'s':''}. Deleting it clears that value from them. Continue?`))return;
+ allRows().forEach(r=>{if(l==='intent')r.intent=(r.intent||[]).filter(x=>x!==o.n);else if(r[LISTS[l].f]===o.n)r[LISTS[l].f]=''});
+ if(F.intent===o.n)F.intent='';if(F.pri===o.n)F.pri='';O(l).splice(i,1)}
+
+/* modal */
+function manage(){const T=k=>k==='projects'?'Projects':LISTS[k].l,pj=mTab==='projects';
+ const b=pj?state.projects.map((p,i)=>`<div class="mr"><input data-pn="${i}" value="${esc(p.name)}" aria-label="Project name"><span class="cnt">${p.keywords.length} keywords</span><button class="rb" data-pd="${i}" title="Delete project" ${state.projects.length<2?'disabled':''}>✕</button></div>`).join('')
+  :O(mTab).map((o,i)=>`<div class="mr"><input type="color" data-oc="${i}" value="${o.c}" aria-label="Color"><input data-on="${i}" value="${esc(o.n)}" aria-label="Option name"><span class="cnt">${usage(mTab,o.n)} used</span><button class="rb" data-od="${i}" title="Delete option">✕</button></div>`).join('')||'<p class="hint">No options yet. Add one below.</p>';
+ return `<div class="mh">Customize lists<button data-close aria-label="Close">✕</button></div><div class="tabs">${[...Object.keys(LISTS),'projects'].map(k=>`<button data-tab="${k}" class="${k===mTab?'on':''}">${T(k)}</button>`).join('')}</div><div class="mbody"><p class="hint">${pj?'Rename or delete projects.':'Rename, recolor, add or delete options. Changes apply to every project.'}</p>${b}</div><div class="madd"><input id="newOpt" placeholder="${pj?'New project name':'Add a new option'}"><button class="btn pri" id="newBtn">Add</button></div>`}
+function modal(h){$('#ov').innerHTML=`<div class="modal" role="dialog" aria-modal="true">${h}</div>`;$('#ov').hidden=false}
+function closeModal(){$('#ov').hidden=true;$('#ov').innerHTML=''}
+function openManage(t){if(t)mTab=t;modal(manage())}
+function refresh(keepFocus){save();render();projects();const m=$('#ov .modal');if(m&&!$('#ov').dataset.bulk){m.innerHTML=manage();if(keepFocus)$('#newOpt').focus()}}
+function bulk(){const o=(l)=>`<select id="b${l}"><option value="">None</option>${O(l).map(x=>`<option>${esc(x.n)}</option>`).join('')}</select>`;
+ modal(`<div class="mh">Add many keywords<button data-close aria-label="Close">✕</button></div><div class="mbody"><label class="f">One keyword per line</label><textarea id="bText" rows="8" placeholder="medical billing services&#10;what is medical coding"></textarea><label class="f">Search intent for all (optional)</label>${o('intent')}<label class="f">Priority for all (optional)</label>${o('pri')}</div><div class="madd"><button class="btn" data-close>Cancel</button><button class="btn pri" id="bGo">Add keywords</button></div>`);$('#ov').dataset.bulk=1;$('#bText').focus()}
+
+/* events */
+const gb=$('#gb');
+gb.addEventListener('focusout',e=>{const t=e.target;if(t.isContentEditable)commit(t.dataset.id,t.dataset.k,t.textContent.trim())});
+gb.addEventListener('keydown',e=>{const t=e.target;if(!t.isContentEditable)return;if(e.key==='Enter'){e.preventDefault();t.blur()}if(e.key==='Escape'){e.preventDefault();render()}});
+gb.addEventListener('change',e=>{const t=e.target,id=t.dataset.id;
+ if(t.classList.contains('rowchk')){t.checked?selected.add(id):selected.delete(id);render()}
+ else if(t.dataset.k){if(t.value==='__edit'){openManage(t.dataset.l);render();return}commit(id,t.dataset.k,t.value)}});
+gb.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;const {act,id,v}=b.dataset,kw=P().keywords,i=kw.findIndex(r=>r.id===id);if(i<0)return;
+ if(act==='del'){const prev=kw.slice();kw.splice(i,1);selected.delete(id);save();render();toast('Keyword deleted',()=>{P().keywords=prev;save();render()})}
+ else if(act==='dup'){kw.splice(i+1,0,{...kw[i],id:uid(),updated:today()});save();render()}
+ else if(act==='ix'){kw[i].intent=(kw[i].intent||[]).filter(x=>x!==v);touch(kw[i])}
+ else if(act==='ip')intentPop(b.getBoundingClientRect(),id)});
+$('#gh').addEventListener('click',e=>{const th=e.target.closest('th[data-k]');if(!th)return;const k=th.dataset.k;if(sortKey===k)sortDir*=-1;else{sortKey=k;sortDir=1}render()});
+$('#gh').addEventListener('change',e=>{if(e.target.id!=='selAll')return;rows().forEach(r=>e.target.checked?selected.add(r.id):selected.delete(r.id));render()});
+$('#cards').addEventListener('focusout',e=>{const t=e.target,p=P();if(!t.dataset.c)return;p.cardOverrides=p.cardOverrides||{};const v=t.textContent.trim();if(!v||v===t.dataset.calc)delete p.cardOverrides[t.dataset.c];else p.cardOverrides[t.dataset.c]=v;save()});
+$('#cards').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();e.target.blur()}});
+$('#mix').addEventListener('click',e=>{const b=e.target.closest('[data-mix]');if(!b)return;F.intent=F.intent===b.dataset.mix?'':b.dataset.mix;render()});
+$('#chips').addEventListener('click',e=>{const b=e.target.closest('[data-clr]');if(!b)return;const k=b.dataset.clr;if(k==='all'||k==='q'){F.q='';$('#q').value=''}if(k==='all'){F.intent='';F.pri=''}else if(k!=='q')F[k]='';render()});
+$('#q').oninput=e=>{F.q=e.target.value;render()};
+$('#fIntent').onchange=e=>{F.intent=e.target.value;render()};$('#fPri').onchange=e=>{F.pri=e.target.value;render()};
+$('#colBtn').onclick=e=>{if($('#pop')){closePop();return}colPop(e.currentTarget.getBoundingClientRect())};
+$('#custBtn').onclick=()=>openManage();
+$('#addBtn').onclick=()=>{const r=blank('new keyword');P().keywords.unshift(r);save();render();const el=document.querySelector(`td.s1[data-id="${r.id}"]`);if(el){el.focus();getSelection().selectAllChildren(el)}};
+$('#bulkBtn').onclick=bulk;
+$('#delBtn').onclick=()=>{if(!selected.size)return;const p=P(),prev=p.keywords.slice(),n=selected.size;p.keywords=p.keywords.filter(r=>!selected.has(r.id));selected.clear();save();render();toast(`${n} keyword${n>1?'s':''} deleted`,()=>{p.keywords=prev;save();render()})};
+$('#pdfBtn').onclick=()=>print();
+$('#csvBtn').onclick=()=>{const h=['Keyword',...COLS.map(c=>c.l)],q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+ const l=[h.map(q).join(',')];rows().forEach(r=>l.push([r.keyword,...COLS.map(c=>c.k==='intent'?(r.intent||[]).join('; '):r[c.k])].map(q).join(',')));
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([l.join('\n')],{type:'text/csv'}));a.download=(P().name||'keywords').replace(/\s+/g,'_')+'.csv';a.click();toast('CSV exported')};
+$('#proj').onchange=e=>{if(e.target.value==='__new'){const n=prompt('New project name:');if(n&&n.trim()){state.projects.push({id:uid(),name:n.trim(),keywords:[]});state.activeProject=state.projects.length-1}}else state.activeProject=+e.target.value;selected.clear();save();projects();render()};
+$('#themeBtn').onclick=()=>{state.theme=state.theme==='dark'?'light':'dark';theme();save()};
+function theme(){document.documentElement.dataset.theme=state.theme;$('#themeBtn').textContent=state.theme==='dark'?'Light mode':'Dark mode'}
+/* modal events */
+const ov=$('#ov');
+ov.addEventListener('click',e=>{const t=e.target;
+ if(t===ov||t.closest('[data-close]'))return closeModal();
+ if(t.dataset.tab){mTab=t.dataset.tab;return modal(manage())}
+ if(t.dataset.od!==undefined){delOpt(mTab,+t.dataset.od);return refresh()}
+ if(t.dataset.pd!==undefined){const i=+t.dataset.pd,p=state.projects[i];if(state.projects.length<2||!confirm(`Delete project "${p.name}" and its ${p.keywords.length} keywords?`))return;state.projects.splice(i,1);state.activeProject=Math.min(state.activeProject,state.projects.length-1);selected.clear();return refresh()}
+ if(t.id==='newBtn')addNew();
+ if(t.id==='bGo'){const ls=$('#bText').value.split('\n').map(s=>s.trim()).filter(Boolean),i=$('#bintent').value,p=$('#bpri').value;if(!ls.length)return;
+  ls.reverse().forEach(k=>P().keywords.unshift(blank(k,{intent:i?[i]:[],priority:p})));closeModal();save();render();toast(`${ls.length} keywords added`)}});
+function addNew(){const inp=$('#newOpt'),v=inp.value.trim();if(!v)return;
+ if(mTab==='projects'){state.projects.push({id:uid(),name:v,keywords:[]})}else addOpt(mTab,v);refresh(true)}
+ov.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='newOpt')addNew()});
+ov.addEventListener('change',e=>{const t=e.target;
+ if(t.dataset.on!==undefined){rename(mTab,+t.dataset.on,t.value);refresh()}
+ else if(t.dataset.oc!==undefined){O(mTab)[+t.dataset.oc].c=t.value;refresh()}
+ else if(t.dataset.pn!==undefined){const n=t.value.trim();if(n)state.projects[+t.dataset.pn].name=n;refresh()}});
+document.addEventListener('mousedown',e=>{if(!e.target.closest('#pop,[data-act="ip"],#colBtn'))closePop()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePop();if(!ov.hidden)closeModal()}});
+const _close=closeModal;closeModal=function(){delete ov.dataset.bulk;_close()};
+addEventListener('scroll',closePop,true);
+
+theme();projects();render();
+</script>
+</body>
+</html>
